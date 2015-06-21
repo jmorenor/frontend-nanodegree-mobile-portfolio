@@ -407,16 +407,17 @@ var resizePizzas = function(size) {
 
   // Changes the value for the size of the pizza above the slider
   function changeSliderLabel(size) {
+    var pizzaSizeElement = document.getElementById('pizzaSize');
     switch(size) {
       /** Change from the querySelector call to getElementByID (better performace)*/
       case "1":
-        document.getElementById('pizzaSize').innerHTML = 'Small';
+        pizzaSizeElement.innerHTML = 'Small';
         return;
       case "2":
-        document.getElementById('pizzaSize').innerHTML = 'Medium';
+        pizzaSizeElement.innerHTML = 'Medium';
         return;
       case "3":
-        document.getElementById('pizzaSize').innerHTML = 'Large';
+        pizzaSizeElement.innerHTML = 'Large';
         return;
       default:
         console.log('bug in changeSliderLabel');
@@ -461,9 +462,9 @@ var resizePizzas = function(size) {
     var randomPizzaContainer = document.getElementsByClassName('randomPizzaContainer');
     /** Since all the pizzas have the same size, the first element of the array can be used for the dx and newwidth variables */
     var dx = determineDx(randomPizzaContainer[0], size);
-    var newwidth = (randomPizzaContainer[0].offsetWidth + dx) + 'px';
+    var newwidth = randomPizzaContainer[0].offsetWidth + dx + 'px';
 
-    for (var i = 0, len = randomPizzaContainer.length ; i < len; i++) {
+    for (var i = 0, len = randomPizzaContainer.length; i < len; i++) {
       randomPizzaContainer[i].style.width = newwidth;
     }
   }
@@ -522,7 +523,7 @@ function updatePositions() {
   for (var i = 0, len = items.length; i < len; i++) {
     /** Move the number 100 to pahse, so all operations are kept togethet */
     phase = Math.sin(top + i % 5) * 100;
-    items[i].style.left = items[i].basicLeft + phase + 'px';
+    items[i].style.transform = 'TranslateX(' + phase + 'px)';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -550,7 +551,8 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.src = "images/pizza.png";
     elem.style.height = '100px';
     elem.style.width = '73.333px';
-    elem.basicLeft = (i % cols) * s;
+    /** Substitue the baseLeft for the style.left property*/
+    elem.style.left = (i % cols) * s + 'px';
     elem.style.top = Math.floor(i / cols) * s + 'px';
     /** Change from the querySelector call to getElementByID (better performace) */
     document.getElementById('movingPizzas1').appendChild(elem);
