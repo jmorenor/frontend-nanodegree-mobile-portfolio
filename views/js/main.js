@@ -469,7 +469,7 @@ var resizePizzas = function(size) {
     }
   }
 
-  changePizzaSizes(size);
+  changePizzaSizes(size)
 
   // User Timing API is awesome
   window.performance.mark("mark_end_resize");
@@ -541,21 +541,26 @@ window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
+  var pizzaElement = document.createElement("img");
+  pizzaElement.className = "mover";
+  pizzaElement.src = "images/pizza.png";
+  pizzaElement.style.height = "100px";
+  pizzaElement.style.width = "73.333px";
+
+  var node = document.getElementById('movingPizzas1');
+
   var cols = 8;
   var s = 256;
   var elem;
   /** Reduce the number from 200 to 48, which is enough for most common screen sizes – I excluded UHD screens*/
   for (var i = 0; i < 40; i++) {
-    elem = document.createElement('img');
+    elem = pizzaElement.cloneNode(true);
     elem.className = 'mover';
-    elem.src = "images/pizza.png";
-    elem.style.height = '100px';
-    elem.style.width = '73.333px';
     /** Substitue the baseLeft for the style.left property*/
     elem.style.left = (i % cols) * s + 'px';
     elem.style.top = Math.floor(i / cols) * s + 'px';
     /** Change from the querySelector call to getElementByID (better performace) */
-    document.getElementById('movingPizzas1').appendChild(elem);
+    node.appendChild(elem);
   }
   updatePositions();
 });
